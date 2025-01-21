@@ -1,13 +1,27 @@
-'use client';
-
+import { CreateRoom } from '@/components/create-room';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { Room } from '@/db/schema';
+import { createRoom, getRooms } from '@/server';
 
-export default function Home() {
-	const [message, setMessage] = useState('Click me mf');
+export default async function Home() {
+	const rooms = await getRooms();
 	return (
-		<div className="w-screen h-screen p-4">
-			<Button onClick={() => setMessage('ouch!')}>{message}</Button>
-		</div>
+		<>
+			<RoomList rooms={rooms} />
+			<CreateRoom />
+		</>
 	);
 }
+
+const RoomList = ({ rooms }: { rooms: Room[] }) => {
+	return (
+		<div>
+			<h1>Rooms</h1>
+			<ul>
+				{rooms.map(room => (
+					<p key={room.id}>{room.id}</p>
+				))}
+			</ul>
+		</div>
+	);
+};
