@@ -1,3 +1,9 @@
-import { drizzle } from 'drizzle-orm/vercel-postgres';
+// src/db.ts
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import { config } from 'dotenv';
 
-const db = drizzle();
+config({ path: '.env' }); // or .env.local
+
+const sql = neon(process.env.DATABASE_URL!);
+export const db = drizzle({ client: sql });
